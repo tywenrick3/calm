@@ -57,9 +57,7 @@ class Cloud {
 //^^^^^Objects^^^^^
 
 function preload() {
-	bgsong = loadSound(
-		'560450__migfus20__calming-background-music-guitar-loop.mp3'
-	);
+	bgsong = loadSound('assets/bg_music.mp3');
 }
 
 function song() {
