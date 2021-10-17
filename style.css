@@ -1,8 +1,13 @@
-html, body {
-  margin: 0;
-  padding: 0;
+html,
+body {
+	margin: 30;
+	padding: 0;
+	background-color: rgb(24, 24, 24);
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 canvas {
-  display: block;
+	display: block;
 }
