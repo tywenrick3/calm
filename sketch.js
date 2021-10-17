@@ -75,16 +75,18 @@ function draw() {
 	noStroke();
 	let sky_color = color('#4DC3FF');
 	let x = map(mouseX, 0, width, 0, 255);
-	let changingcolor = color(243, x, 32);
+	let y = map(mouseY, 0, width, 0, 255);
+	let oceangrade = color(26, y, 243);
+	let sungrade = color(243, x, 32);
 	background(sky_color);
 
-	sun = new Sun(300, width / 2, height / 2, changingcolor);
-	sun2 = new Sun(300, width / 2, height / 2, '#F2AE2E');
+	let sun = new Sun(300, width / 2, height / 2, sungrade);
+	let sun2 = new Sun(300, width / 2, height / 2, '#F2AE2E');
 
 	sun.display();
 
 	let ocean_color = color('#177EB2');
-	fill(ocean_color);
+	fill(oceangrade);
 	rect(0, height / 2, 800, 300);
 
 	for (let i = 0; i < clouds.length; i++) {
@@ -100,6 +102,7 @@ function mousePressed() {
 
 function popcloud() {
 	clouds.pop();
+	poof.setVolume(1);
 	poof.play();
 }
 
@@ -114,7 +117,7 @@ function reset() {
 		clouds.pop();
 	}
 	bgsong.stop();
-	bgsong.setVolume(0.5);
+	bgsong.setVolume(0.1);
 	song();
 	num_of_clouds = floor(random(35, 60));
 	for (let i = 0; i < num_of_clouds; i++) {
