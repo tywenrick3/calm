@@ -74,9 +74,11 @@ function setup() {
 function draw() {
 	noStroke();
 	let sky_color = color('#4DC3FF');
+	let x = map(mouseX, 0, width, 0, 255);
+	let changingcolor = color(243, x, 32);
 	background(sky_color);
 
-	sun = new Sun(300, width / 2, height / 2);
+	sun = new Sun(300, width / 2, height / 2, changingcolor);
 	sun2 = new Sun(300, width / 2, height / 2, '#F2AE2E');
 
 	sun.display();
