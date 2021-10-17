@@ -57,7 +57,8 @@ class Cloud {
 //^^^^^Objects^^^^^
 
 function preload() {
-	bgsong = loadSound('assets/bg_music.mp3');
+	bgsong = loadSound('assets/lovelysunset.m4a');
+	poof = loadSound('assets/poof.mp3');
 }
 
 function song() {
@@ -92,7 +93,12 @@ function draw() {
 }
 
 function mousePressed() {
+	popcloud();
+}
+
+function popcloud() {
 	clouds.pop();
+	poof.play();
 }
 
 function setupButton() {
@@ -106,7 +112,7 @@ function reset() {
 		clouds.pop();
 	}
 	bgsong.stop();
-	bgsong.setVolume(0.1);
+	bgsong.setVolume(0.5);
 	song();
 	num_of_clouds = floor(random(35, 60));
 	for (let i = 0; i < num_of_clouds; i++) {
