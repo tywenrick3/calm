@@ -1,11 +1,7 @@
 let bgsong;
-
 let sky_color;
-
 let light;
-
 let index = true;
-
 let clouds = [];
 
 class Sun {
