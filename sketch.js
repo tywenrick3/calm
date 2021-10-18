@@ -1,5 +1,9 @@
 let bgsong;
 
+let sky_color;
+
+let index = true;
+
 let clouds = [];
 
 class Sun {
@@ -73,7 +77,6 @@ function setup() {
 
 function draw() {
 	noStroke();
-	let sky_color = color('#4DC3FF');
 	let x = map(mouseX, 0, width, 0, 255);
 	let y = map(mouseY, 0, width, 0, 255);
 	let oceangrade = color(26, y, 243);
@@ -85,7 +88,6 @@ function draw() {
 
 	sun.display();
 
-	let ocean_color = color('#177EB2');
 	fill(oceangrade);
 	rect(0, height / 2, 800, 300);
 
@@ -93,6 +95,22 @@ function draw() {
 		clouds[i].display();
 		clouds[i].move();
 		clouds[i].bounce();
+	}
+}
+
+function switchSky() {
+	if (index) {
+		sky_color = 40;
+		index = false;
+	} else {
+		sky_color = color('#4DC3FF');
+		index = true;
+	}
+}
+
+function keyPressed() {
+	if (keyCode == 32) {
+		switchSky();
 	}
 }
 
@@ -109,13 +127,24 @@ function popcloud() {
 function setupButton() {
 	let button = createButton('Reset');
 	button.mousePressed(reset);
-	button.position(width / 2, height + 5);
+	//button.mouseOver(changeColor);
+	//button = select('.button');
+	button.style('font-size', '16px');
+	button.style('border-radius', '6px');
+	button.style('background-color', 'gray');
+	button.style('border', 'none');
+	button.style('text-decoration', 'none');
+	button.style('font-style', 'monospace');
+	button.style('color', 'black');
+	button.style('padding', '13px 28px');
+	button.position(windowWidth / 2 - 40, height + 15);
 }
 
 function reset() {
 	while (clouds.length > 0) {
 		clouds.pop();
 	}
+	sky_color = color('#4DC3FF');
 	bgsong.stop();
 	bgsong.setVolume(0.1);
 	song();
