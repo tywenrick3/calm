@@ -3,6 +3,7 @@ let sky_color;
 let light;
 let index = true;
 let clouds = [];
+let mode;
 
 class Sun {
 	constructor(radius, x, y, c = '#F2921D') {
@@ -75,6 +76,26 @@ function setup() {
 }
 
 function draw() {
+	if (mode == 0) {
+		//startscreen
+		start();
+	}
+	if (mode == 1) {
+		//main
+		main();
+	}
+}
+
+function start() {
+	background('#fef774');
+	textAlign(CENTER);
+	fill('black');
+	textSize(36);
+	textFont('adage-script-jf, sans-serif');
+	text('calm', width / 2, height / 2);
+}
+
+function main() {
 	noStroke();
 	let x = map(mouseX, 0, width, 0, 255);
 	let y = map(mouseY, 0, width, 0, 255);
@@ -109,8 +130,14 @@ function switchSky() {
 }
 
 function keyPressed() {
-	if (keyCode == 32) {
+	if (keyCode == 32 && mode == 1) {
 		switchSky();
+	}
+	if (keyCode == 13 && mode == 0) {
+		mode = 1;
+	}
+	if (keyCode == 27 && mode == 1) {
+		mode = 0;
 	}
 }
 
@@ -141,6 +168,7 @@ function setupButton() {
 }
 
 function reset() {
+	mode = 0;
 	while (clouds.length > 0) {
 		clouds.pop();
 	}
