@@ -2,6 +2,8 @@ let bgsong;
 
 let sky_color;
 
+let light;
+
 let index = true;
 
 let clouds = [];
@@ -63,6 +65,7 @@ class Cloud {
 function preload() {
 	bgsong = loadSound('assets/lovelysunset.m4a');
 	poof = loadSound('assets/poof.mp3');
+	light = loadSound('assets/light_switch.wav');
 }
 
 function song() {
@@ -99,6 +102,7 @@ function draw() {
 }
 
 function switchSky() {
+	light.play();
 	if (index) {
 		sky_color = 40;
 		index = false;
