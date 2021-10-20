@@ -3,7 +3,28 @@ let sky_color;
 let light;
 let index = true;
 let clouds = [];
-let mode;
+let oceans = [];
+let mode = 0;
+let drop;
+let locked = false;
+let xgrade;
+let ygrade;
+let sunsize = 300;
+
+class Ocean {
+	constructor(x, y, l, w, c) {
+		this.x = x;
+		this.y = y;
+		this.l = l;
+		this.w = w;
+		this.c = c;
+	}
+
+	display() {
+		fill(this.c);
+		rect(this.x, this.y, this.l, this.w, this.c);
+	}
+}
 
 class Sun {
 	constructor(radius, x, y, c = '#F2921D') {
@@ -21,19 +42,28 @@ class Sun {
 }
 
 class Cloud {
-	constructor() {
-		this.xPos = floor(random(0, width));
-		this.yPos = floor(random(0, height / 2 - 50));
-		this.speed = floor(random(1, 1.5));
+	constructor(
+		xPos = floor(random(0, width)),
+		yPos = floor(random(0, height / 2 - 50)),
+		l = floor(random(25, 175)),
+		h = floor(random(25, 75)),
+		speed = floor(random(1, 1.5)),
+		r = floor(random(200, 255)),
+		g = floor(random(200, 255)),
+		b = floor(random(200, 255))
+	) {
+		this.xPos = xPos;
+		this.yPos = yPos;
+		this.speed = speed;
+		this.l = l;
+		this.h = h;
+		this.r = r;
+		this.b = b;
+		this.g = g;
 		let temp = random(0, 10);
 		if (temp < 5) {
 			this.speed *= -1;
 		}
-		this.l = floor(random(25, 125));
-		this.h = floor(random(25, 75));
-		this.r = floor(random(200, 255));
-		this.b = floor(random(200, 255));
-		this.g = floor(random(200, 255));
 	}
 
 	move() {
@@ -90,26 +120,37 @@ function start() {
 	background('#fef774');
 	textAlign(CENTER);
 	fill('black');
-	textSize(36);
+	textSize(72);
 	textFont('adage-script-jf, sans-serif');
 	text('calm', width / 2, height / 2);
+	textFont('input-serif, serif');
+	textSize(14);
+	text('Press Enter', width / 2, height / 2 + 250);
+	for (let i = 0; i < clouds.length; i++) {
+		clouds[i].display();
+		clouds[i].move();
+		clouds[i].bounce();
+	}
 }
 
 function main() {
 	noStroke();
-	let x = map(mouseX, 0, width, 0, 255);
-	let y = map(mouseY, 0, width, 0, 255);
-	let oceangrade = color(26, y, 243);
-	let sungrade = color(243, x, 32);
-	background(sky_color);
+	xgrade = map(mouseX, 0, width, 0, 255);
+	ygrade = map(mouseY, 0, width, 0, 255);
+	oceangrade = color(26, ygrade, 243);
 
-	let sun = new Sun(300, width / 2, height / 2, sungrade);
-	let sun2 = new Sun(300, width / 2, height / 2, '#F2AE2E');
+	let sungrade = color(243, xgrade, 32);
+	//let ocean = new Ocean(0, height / 2, width, 300, oceangrade);
+
+	background(sky_color);
+	let sun = new Sun(sunsize, width / 2, height / 2, sungrade);
 
 	sun.display();
+	//ocean.display();
 
 	fill(oceangrade);
-	rect(0, height / 2, 800, 300);
+	let temp = 300;
+	rect(0, height / 2, 800, temp);
 
 	for (let i = 0; i < clouds.length; i++) {
 		clouds[i].display();
@@ -139,10 +180,17 @@ function keyPressed() {
 	if (keyCode == 27 && mode == 1) {
 		mode = 0;
 	}
+	if (keyCode == 84 && mode == 1) {
+		drop = true;
+	}
 }
 
 function mousePressed() {
 	popcloud();
+}
+
+function mouseDragged() {
+	sunsize = dist(width / 2, height / 2, mouseX, mouseY);
 }
 
 function popcloud() {
@@ -154,8 +202,6 @@ function popcloud() {
 function setupButton() {
 	let button = createButton('Reset');
 	button.mousePressed(reset);
-	//button.mouseOver(changeColor);
-	//button = select('.button');
 	button.style('font-size', '16px');
 	button.style('border-radius', '6px');
 	button.style('background-color', 'gray');
@@ -168,7 +214,7 @@ function setupButton() {
 }
 
 function reset() {
-	mode = 0;
+	drop = false;
 	while (clouds.length > 0) {
 		clouds.pop();
 	}
